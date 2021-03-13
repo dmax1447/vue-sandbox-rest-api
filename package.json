@@ -4,8 +4,10 @@
   "description": "rest sapmple",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "start:mongo": "node index.js",
+    "start:simple": "node express.js",
+    "dev:mongo": "nodemon index.js",
+    "dev:simple": "nodemon express.js"
   },
   "keywords": [
     "vue",

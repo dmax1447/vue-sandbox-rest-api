@@ -2,18 +2,12 @@
 const express = require('express');
 const { v4 } = require('uuid');
 
-
-// импортируем драйвер MongoDb
-const MongoClient = require("mongodb").MongoClient;
-
-// создаем клиент для локальной БД
-const mongoClient2 = new MongoClient("mongodb://localhost:27017/", { useUnifiedTopology: true });
-
-// создаем клиент для облачной БД
-const mongoClient = new MongoClient("mongodb+srv://dmax1447:Mistral147@cluster0-gknug.mongodb.net/test?retryWrites=true&w=majority", { useUnifiedTopology: true });
-
 // моки и настройки
 const PORT = 3000;
+let CONTACTS = [
+    {id: v4(), name: 'Max', surname: 'Dragaitsev', phone: '8-926-111-22-33'},
+    {id: v4(), name: 'Marina', surname: 'Kukhterina', phone: '8-926-222-33-44'}
+]
 
 // создаем сервер
 const app = express();
@@ -37,40 +31,24 @@ app.use(function (req, res, next) {
 
 // создание нового контакта
 app.post('/api/contacts', (req, res) => {
+    // local
     const newContactData = req.body;
     const id = v4();
     const newContact = {...newContactData, id}
-    mongoClient.connect( (err, client) => {
-        const db = client.db("MyData");
-        db.collection("users").insertOne({ ...newContactData, _id: id});
-    });
+    CONTACTS.push(newContact);
     res.status(201);
     res.send(JSON.stringify(newContact));
-
 });
 
 // чтение всех контактов
 app.get('/api/contacts', (req, res) => {
-    mongoClient.connect( (err, client) => {
-        const db = client.db("MyData");
-        db.collection("users").find().toArray((err, results) => {
-            if (!err) {
-                console.log(results);
-                res.send(JSON.stringify(results));
-            }
-        })
-    });
+    res.send(JSON.stringify(CONTACTS));
 });
 
 //удаление контакта
 app.delete('/api/contacts/:id', (req, res) => {
     console.log('DELETE api/contacts ', req.params.id);
-    mongoClient.connect( (err, client) => {
-        const db = client.db("MyData");
-        if (!err) {
-            db.collection("users").remove({ _id: req.params.id});
-        }
-    });
+    CONTACTS = CONTACTS.filter(contact => contact.id !== req.params.id)
     res.send()
 });
 
@@ -78,12 +56,9 @@ app.delete('/api/contacts/:id', (req, res) => {
 app.put('/api/contacts/:id', (req, res) => {
     const id = req.params.id;
     const newData = req.body;
-    mongoClient.connect( (err, client) => {
-        const db = client.db("MyData");
-        if (!err) {
-            db.collection("users").save({ _id: id, ...newData });
-        }
-    });
+    const idx = CONTACTS.findIndex(contact => contact.id === id);
+    CONTACTS[idx] = newData;
+
     res.send()
 });
 
