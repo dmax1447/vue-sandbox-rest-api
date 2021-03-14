@@ -8,7 +8,7 @@ const mockUsers = require('./mock/users.js')
 // моки и настройки
 const PORT = 3000;
 
-let CONTACTS = mockUsers;
+let CONTACTS = [...mockUsers];
 
 // создаем сервер
 const app = express();
