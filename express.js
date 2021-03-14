@@ -2,12 +2,13 @@
 const express = require('express');
 const { v4 } = require('uuid');
 
+// импортируем моки
+const mockUsers = require('./mock/users.js')
+
 // моки и настройки
 const PORT = 3000;
-let CONTACTS = [
-    {id: v4(), name: 'Max', surname: 'Dragaitsev', phone: '8-926-111-22-33'},
-    {id: v4(), name: 'Marina', surname: 'Kukhterina', phone: '8-926-222-33-44'}
-]
+
+let CONTACTS = mockUsers;
 
 // создаем сервер
 const app = express();
@@ -58,7 +59,6 @@ app.put('/api/contacts/:id', (req, res) => {
     const newData = req.body;
     const idx = CONTACTS.findIndex(contact => contact.id === id);
     CONTACTS[idx] = newData;
-
     res.send()
 });
 
