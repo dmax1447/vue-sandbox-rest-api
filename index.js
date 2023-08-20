@@ -7,10 +7,10 @@ const { v4 } = require('uuid');
 const MongoClient = require("mongodb").MongoClient;
 
 // создаем клиент для локальной БД
-const mongoClient2 = new MongoClient("mongodb://localhost:27017/", { useUnifiedTopology: true });
+const mongoClient = new MongoClient("mongodb://localhost:27017/", { useUnifiedTopology: true });
 
 // создаем клиент для облачной БД
-const mongoClient = new MongoClient("mongodb+srv://dmax1447:Mistral147@cluster0-gknug.mongodb.net/test?retryWrites=true&w=majority", { useUnifiedTopology: true });
+// const mongoClient = new MongoClient("mongodb+srv://dmax1447:Mistral147@cluster0-gknug.mongodb.net/test?retryWrites=true&w=majority", { useUnifiedTopology: true });
 
 // моки и настройки
 const PORT = 3000;
@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true })) // for parsing application/x-www
 
 // разрешаем CORS
 app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);

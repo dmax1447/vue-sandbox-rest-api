@@ -22,6 +22,7 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader('content-type', 'application/json');
     next();
 });
 
@@ -43,6 +44,7 @@ app.post('/api/contacts', (req, res) => {
 
 // чтение всех контактов
 app.get('/api/contacts', (req, res) => {
+    console.log(req)
     res.send(JSON.stringify(CONTACTS));
 });
 
@@ -60,12 +62,6 @@ app.put('/api/contacts/:id', (req, res) => {
     const idx = CONTACTS.findIndex(contact => contact.id === id);
     CONTACTS[idx] = newData;
     res.send()
-});
-
-
-// поиск контакта по параметрам
-app.get('/api/contacts/find', (req, res) => {
-    console.log('GET api/contacts/find ', req.body);
 });
 
 
